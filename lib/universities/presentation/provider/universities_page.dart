@@ -17,7 +17,7 @@ class UniversitiesPage extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Choose country'),
           leading: CountriesWidget(
-              currentCountry: Countries.Armenia,
+              currentCountry: context.watch<UniversityListModel>().country,
               onChange: (value) {
                 context
                     .read<UniversityListModel>()
@@ -31,28 +31,15 @@ class UniversitiesPage extends StatelessWidget {
   }
 }
 
-class _UniversitiesView extends StatefulWidget {
+class _UniversitiesView extends StatelessWidget {
   const _UniversitiesView({
     super.key,
   });
 
   @override
-  State<_UniversitiesView> createState() => _UniversitiesViewState();
-}
-
-class _UniversitiesViewState extends State<_UniversitiesView> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<UniversityListModel>().addListener(() {
-      setState(() {});
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<University>>(
-        future: context.read<UniversityListModel>().universities,
+        future: context.watch<UniversityListModel>().universities,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data?.isNotEmpty ?? false) {
